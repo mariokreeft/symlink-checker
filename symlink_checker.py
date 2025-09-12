@@ -124,7 +124,7 @@ class SkiplistScreen(Screen):
         skiplist = sorted(lees_skiplist())
         yield Vertical(
             Label("Skiplist"),
-            ListView(*[ListItem(Label(item)) for item in skiplist]),
+            ListView(*[ListItem(Label(item)) for item in skiplist], id="skiplist_list"),
             Input(placeholder="Voeg app toe", id="add_input"),
             Horizontal(
                 Button("Voeg toe", id="add"),
@@ -166,9 +166,9 @@ class ResultsScreen(Screen):
         yield Vertical(
             Label("Resultaten"),
             Label(f"In orde ({len(self.in_orde)}):"),
-            ListView(*[ListItem(Label(app)) for app in self.in_orde]),
+            ListView(*[ListItem(Label(app)) for app in self.in_orde], id="in_orde_list"),
             Label("Bijzonderheden:"),
-            ListView(*[ListItem(Label(b)) for b in self.bijzonderheden]),
+            ListView(*[ListItem(Label(b)) for b in self.bijzonderheden], id="bijzonderheden_list"),
             Horizontal(
                 Button("Terug", id="back", variant="primary"),
                 Button("Afsluiten", id="exit", variant="error")
@@ -204,6 +204,15 @@ class SymlinkCheckerApp(App):
     }
     ListView {
         height: 60%;
+    }
+    #in_orde_list {
+        height: 8;
+    }
+    #bijzonderheden_list {
+        height: 8;
+    }
+    #skiplist_list {
+        height: 10;
     }
     """
 
