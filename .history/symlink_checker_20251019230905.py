@@ -340,59 +340,46 @@ class SymlinkCheckerApp(App):
     
     #menu {
         height: 100%;
-        padding: 0 1;
+        padding: 1;
     }
     
     /* Directory container */
     .dirs-container {
         background: #313244;
         border: round #89b4fa;
-        padding: 0 1;
+        padding: 1 2;
         margin: 0 0 1 0;
         height: auto;
-        overflow: auto;
     }
     
     #dirs_label {
         color: #cdd6f4;
         text-align: left;
-        height: auto;
-    }
-
-    /* Top toolbar */
-    #toolbar {
-        height: 3;
-        padding: 0;
-        margin: 0 0 0 0;
-        content-align: left middle;
     }
     
     /* Button styling */
     Button {
         margin: 0 1;
         height: 3;
+        min-width: 12;
         background: #45475a;
         color: #cdd6f4;
-        content-align: center middle;
-        padding: 0 2;
+        border: round #6c7086;
     }
     
     Button:hover {
         background: #585b70;
+        border: round #89b4fa;
     }
     
     Button:focus {
-        background: #585b70;
-    }
-    
-    Button:disabled {
-        opacity: 0.6;
-        content-align: center middle;
+        border: round #f38ba8;
     }
     
     Button.-primary {
         background: #89b4fa;
         color: #1e1e2e;
+        border: round #b4befe;
     }
     
     Button.-primary:hover {
@@ -415,10 +402,6 @@ class SymlinkCheckerApp(App):
     
     Button.-error:hover {
         background: #f5a3b8;
-    }
-    
-    Horizontal {
-        height: auto;
     }
     
     /* Progress bar */
@@ -448,7 +431,7 @@ class SymlinkCheckerApp(App):
         background: #313244;
         min-height: 20;
         max-height: 20;
-        margin: 0 0;
+        margin: 1 0;
     }
     
     #activity_log > ListItem {
@@ -567,16 +550,15 @@ class SymlinkCheckerApp(App):
         yield Container(
             Vertical(
                 Container(
-                    Static(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}", id="dirs_label"),
+                    Label(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}", id="dirs_label"),
                     classes="dirs-container"
                 ),
                 Horizontal(
-                    Button(" Check", id="run_check", variant="primary"),
-                    Button(" Symlink", id="set_sym"),
-                    Button(" Apps", id="set_apps"),
-                    Button(" Skip", id="skiplist"),
-                    Button(" Exit", id="exit", variant="error"),
-                    id="toolbar"
+                    Button("🔍 Check", id="run_check", variant="primary"),
+                    Button("⚙️ Symlink", id="set_sym"),
+                    Button("⚙️ Apps", id="set_apps"),
+                    Button("📋 Skip", id="skiplist"),
+                    Button("❌ Exit", id="exit", variant="error"),
                 ),
                 ListView(id="activity_log"),
                 id="menu"
@@ -602,7 +584,7 @@ class SymlinkCheckerApp(App):
             self.notify("⚠️ Geen .app items gevonden in de directory.", severity="warning")
             return
         progress = ProgressBar(total=total)
-        status_label = Label(" Checking: " + items[0] if items else "", classes="status-text")
+        status_label = Label("⏳ Checking: " + items[0] if items else "", classes="status-text")
         details_label = Label("", classes="status-text")
         self.mount(progress)
         self.mount(status_label)
@@ -660,16 +642,16 @@ class SymlinkCheckerApp(App):
             if antwoord == 'j':
                 nieuwe_locatie = os.path.join(dir_path, item)
                 try:
-                    details_label.update(f" Verplaatsen: {item}...")
+                    details_label.update(f"📦 Verplaatsen: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen: {item}..."))
+                    new_item = ListItem(Label(f"📦 Verplaatsen: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
 
                     if os.path.exists(nieuwe_locatie):
-                        details_label.update(f" Verwijderen oude: {item}...")
+                        details_label.update(f"🗑️ Verwijderen oude: {item}...")
                         await asyncio.sleep(0.05)
-                        new_item = ListItem(Label(f" Verwijderen oude: {item}..."))
+                        new_item = ListItem(Label(f"🗑️ Verwijderen oude: {item}..."))
                         activity_log.append(new_item)
                         new_item.scroll_visible()
                         if os.path.isdir(nieuwe_locatie) and not os.path.islink(nieuwe_locatie):
@@ -677,16 +659,16 @@ class SymlinkCheckerApp(App):
                         else:
                             os.remove(nieuwe_locatie)
 
-                    details_label.update(f" Verplaatsen naar: {item}...")
+                    details_label.update(f"📤 Verplaatsen naar: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen naar: {item}..."))
+                    new_item = ListItem(Label(f"📤 Verplaatsen naar: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     shutil.move(app_path, nieuwe_locatie)
 
-                    details_label.update(f" Symlink aanmaken: {item}...")
+                    details_label.update(f"🔗 Symlink aanmaken: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Symlink aanmaken: {item}..."))
+                    new_item = ListItem(Label(f"🔗 Symlink aanmaken: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     os.symlink(nieuwe_locatie, app_path)
@@ -732,7 +714,7 @@ class SymlinkCheckerApp(App):
             self.config["symlinked_dir"] = msg.dir_path
         elif msg.key == "apps_dir":
             self.config["apps_dir"] = msg.dir_path
-        self.query_one("#dirs_label", Static).update(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}")
+        self.query_one("#dirs_label", Label).update(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}")
 
     @on(Button.Pressed, "#skiplist")
     def open_skiplist(self):

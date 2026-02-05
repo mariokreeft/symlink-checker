@@ -334,226 +334,86 @@ class ResultsScreen(Screen):
 
 class SymlinkCheckerApp(App):
     CSS = """
-    Screen {
-        background: #1e1e2e;
+    SymlinkCheckerApp {
+        align: center middle;
     }
-    
     #menu {
         height: 100%;
-        padding: 0 1;
     }
-    
-    /* Directory container */
-    .dirs-container {
-        background: #313244;
-        border: round #89b4fa;
-        padding: 0 1;
-        margin: 0 0 1 0;
-        height: auto;
-        overflow: auto;
-    }
-    
-    #dirs_label {
-        color: #cdd6f4;
-        text-align: left;
-        height: auto;
-    }
-
-    /* Top toolbar */
-    #toolbar {
-        height: 3;
-        padding: 0;
-        margin: 0 0 0 0;
-        content-align: left middle;
-    }
-    
-    /* Button styling */
     Button {
-        margin: 0 1;
-        height: 3;
-        background: #45475a;
-        color: #cdd6f4;
-        content-align: center middle;
-        padding: 0 2;
+        margin: 1;
+        background: blue;
+        color: white;
     }
-    
     Button:hover {
-        background: #585b70;
+        background: darkblue;
     }
-    
-    Button:focus {
-        background: #585b70;
-    }
-    
-    Button:disabled {
-        opacity: 0.6;
-        content-align: center middle;
-    }
-    
-    Button.-primary {
-        background: #89b4fa;
-        color: #1e1e2e;
-    }
-    
-    Button.-primary:hover {
-        background: #b4befe;
-    }
-    
-    Button.-success {
-        background: #a6e3a1;
-        color: #1e1e2e;
-    }
-    
-    Button.-success:hover {
-        background: #b8e8b3;
-    }
-    
-    Button.-error {
-        background: #f38ba8;
-        color: #1e1e2e;
-    }
-    
-    Button.-error:hover {
-        background: #f5a3b8;
-    }
-    
-    Horizontal {
-        height: auto;
-    }
-    
-    /* Progress bar */
     ProgressBar {
-        background: #313244;
-        border: round #89b4fa;
-        margin: 1 0;
+        color: green;
     }
-    
-    ProgressBar > .bar--bar {
-        color: #a6e3a1;
-    }
-    
-    /* Status labels */
     .status-text {
-        background: #313244;
-        padding: 1 2;
-        margin: 0 0 1 0;
-        border: round #89b4fa;
-        color: #cdd6f4;
+        color: white;
     }
-    
-    /* Activity log */
-    #activity_log {
-        height: 20;
-        border: round #89b4fa;
-        background: #313244;
-        min-height: 20;
-        max-height: 20;
-        margin: 0 0;
-    }
-    
-    #activity_log > ListItem {
-        padding: 0 1;
-        color: #cdd6f4;
-    }
-    
-    #activity_log > ListItem:hover {
-        background: #45475a;
-    }
-    
-    /* DataTable */
     DataTable {
-        border: round #89b4fa;
-        background: #313244;
+        border: solid white;
     }
-    
-    DataTable > .datatable--header {
-        background: #45475a;
-        color: #89b4fa;
-        text-style: bold;
+    .valid {
+        color: green;
     }
-    
-    /* Input fields */
+    .broken {
+        color: red;
+    }
+    .issue {
+        color: yellow;
+    }
     Input {
-        border: round #89b4fa;
-        background: #313244;
-        padding: 1 2;
-        margin: 1 0;
-        color: #cdd6f4;
+        border: solid white;
+        padding: 1;
     }
-    
     Input:focus {
-        border: round #f38ba8;
+        border: solid blue;
     }
-    
-    /* Notifications */
     .notification.success {
-        background: #a6e3a1;
-        color: #1e1e2e;
+        background: green;
+        color: white;
     }
-    
     .notification.error {
-        background: #f38ba8;
-        color: #1e1e2e;
+        background: red;
+        color: white;
     }
-    
     .notification.warning {
-        background: #f9e2af;
-        color: #1e1e2e;
+        background: yellow;
+        color: black;
     }
-    
-    /* Skiplist */
     .skiplist-item {
-        color: #9399b2;
+        color: gray;
     }
-    
     .remove-button {
-        background: #f38ba8;
-        color: #1e1e2e;
-        min-width: 12;
+        background: red;
+        color: white;
     }
-    
-    .remove-button:hover {
-        background: #f5a3b8;
-    }
-    
     ListView {
         height: 60%;
-        border: round #89b4fa;
-        background: #313244;
     }
-    
+    #activity_log {
+        height: 20;
+        border: solid white;
+        min-height: 20;
+        max-height: 20;
+    }
+    #in_orde_list {
+        height: 8;
+    }
+    #bijzonderheden_list {
+        height: 8;
+    }
     #skiplist_list {
         height: 10;
-        margin: 1 0;
     }
-    
-    /* Results container */
     .results-container {
         height: 20;
         max-height: 20;
         overflow-y: auto;
-        border: round #89b4fa;
-        background: #313244;
-        margin: 1 0;
-    }
-    
-    /* Modal */
-    DirModal {
-        align: center middle;
-    }
-    
-    DirModal > Vertical {
-        background: #313244;
-        border: thick #89b4fa;
-        padding: 2;
-        width: 60;
-    }
-    
-    DirModal Label {
-        text-align: center;
-        text-style: bold;
-        color: #89b4fa;
-        margin-bottom: 1;
     }
     """
 
@@ -566,19 +426,18 @@ class SymlinkCheckerApp(App):
         yield Header()
         yield Container(
             Vertical(
-                Container(
-                    Static(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}", id="dirs_label"),
-                    classes="dirs-container"
-                ),
+                Label(f"Symlink Dir: {self.config['symlinked_dir']}", id="sym_dir_label"),
+                Label(f"Apps Dir: {self.config['apps_dir']}", id="apps_dir_label"),
                 Horizontal(
-                    Button(" Check", id="run_check", variant="primary"),
-                    Button(" Symlink", id="set_sym"),
-                    Button(" Apps", id="set_apps"),
-                    Button(" Skip", id="skiplist"),
-                    Button(" Exit", id="exit", variant="error"),
-                    id="toolbar"
+                    Button("🔍 Voer check uit", id="run_check", variant="primary"),
+                    Button("⚙️ Stel symlink dir in", id="set_sym"),
+                    Button("⚙️ Stel apps dir in", id="set_apps"),
+                    Button("📋 Skiplist beheren", id="skiplist"),
                 ),
                 ListView(id="activity_log"),
+                Horizontal(
+                    Button("❌ Afsluiten", id="exit", variant="error"),
+                ),
                 id="menu"
             )
         )
@@ -602,7 +461,7 @@ class SymlinkCheckerApp(App):
             self.notify("⚠️ Geen .app items gevonden in de directory.", severity="warning")
             return
         progress = ProgressBar(total=total)
-        status_label = Label(" Checking: " + items[0] if items else "", classes="status-text")
+        status_label = Label("⏳ Checking: " + items[0] if items else "", classes="status-text")
         details_label = Label("", classes="status-text")
         self.mount(progress)
         self.mount(status_label)
@@ -660,16 +519,16 @@ class SymlinkCheckerApp(App):
             if antwoord == 'j':
                 nieuwe_locatie = os.path.join(dir_path, item)
                 try:
-                    details_label.update(f" Verplaatsen: {item}...")
+                    details_label.update(f"📦 Verplaatsen: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen: {item}..."))
+                    new_item = ListItem(Label(f"📦 Verplaatsen: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
 
                     if os.path.exists(nieuwe_locatie):
-                        details_label.update(f" Verwijderen oude: {item}...")
+                        details_label.update(f"🗑️ Verwijderen oude: {item}...")
                         await asyncio.sleep(0.05)
-                        new_item = ListItem(Label(f" Verwijderen oude: {item}..."))
+                        new_item = ListItem(Label(f"🗑️ Verwijderen oude: {item}..."))
                         activity_log.append(new_item)
                         new_item.scroll_visible()
                         if os.path.isdir(nieuwe_locatie) and not os.path.islink(nieuwe_locatie):
@@ -677,16 +536,16 @@ class SymlinkCheckerApp(App):
                         else:
                             os.remove(nieuwe_locatie)
 
-                    details_label.update(f" Verplaatsen naar: {item}...")
+                    details_label.update(f"📤 Verplaatsen naar: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen naar: {item}..."))
+                    new_item = ListItem(Label(f"📤 Verplaatsen naar: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     shutil.move(app_path, nieuwe_locatie)
 
-                    details_label.update(f" Symlink aanmaken: {item}...")
+                    details_label.update(f"🔗 Symlink aanmaken: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Symlink aanmaken: {item}..."))
+                    new_item = ListItem(Label(f"🔗 Symlink aanmaken: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     os.symlink(nieuwe_locatie, app_path)
@@ -730,9 +589,10 @@ class SymlinkCheckerApp(App):
     def update_dir_labels(self, msg: DirUpdated):
         if msg.key == "symlinked_dir":
             self.config["symlinked_dir"] = msg.dir_path
+            self.query_one("#sym_dir_label", Label).update(f"Symlink Dir: {msg.dir_path}")
         elif msg.key == "apps_dir":
             self.config["apps_dir"] = msg.dir_path
-        self.query_one("#dirs_label", Static).update(f"📁 Symlink: {self.config['symlinked_dir']}\n📂 Apps: {self.config['apps_dir']}")
+            self.query_one("#apps_dir_label", Label).update(f"Apps Dir: {msg.dir_path}")
 
     @on(Button.Pressed, "#skiplist")
     def open_skiplist(self):
@@ -799,13 +659,5 @@ class SymlinkCheckerApp(App):
 
 
 if __name__ == "__main__":
-    import sys
-    
-    # Controleer of het script met root rechten wordt uitgevoerd
-    if os.geteuid() != 0:
-        print("❌ Dit script vereist root rechten.")
-        print("Voer het script uit met: sudo python3 symlink_checker.py")
-        sys.exit(1)
-    
     app = SymlinkCheckerApp()
     app.run()

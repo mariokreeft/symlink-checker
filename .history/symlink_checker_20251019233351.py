@@ -393,6 +393,7 @@ class SymlinkCheckerApp(App):
     Button.-primary {
         background: #89b4fa;
         color: #1e1e2e;
+        border: round #b4befe;
     }
     
     Button.-primary:hover {
@@ -571,11 +572,11 @@ class SymlinkCheckerApp(App):
                     classes="dirs-container"
                 ),
                 Horizontal(
-                    Button(" Check", id="run_check", variant="primary"),
-                    Button(" Symlink", id="set_sym"),
-                    Button(" Apps", id="set_apps"),
-                    Button(" Skip", id="skiplist"),
-                    Button(" Exit", id="exit", variant="error"),
+                    Button("🔍 Check", id="run_check", variant="primary"),
+                    Button("⚙️ Symlink", id="set_sym"),
+                    Button("⚙️ Apps", id="set_apps"),
+                    Button("📋 Skip", id="skiplist"),
+                    Button("❌ Exit", id="exit", variant="error"),
                     id="toolbar"
                 ),
                 ListView(id="activity_log"),
@@ -602,7 +603,7 @@ class SymlinkCheckerApp(App):
             self.notify("⚠️ Geen .app items gevonden in de directory.", severity="warning")
             return
         progress = ProgressBar(total=total)
-        status_label = Label(" Checking: " + items[0] if items else "", classes="status-text")
+        status_label = Label("⏳ Checking: " + items[0] if items else "", classes="status-text")
         details_label = Label("", classes="status-text")
         self.mount(progress)
         self.mount(status_label)
@@ -660,16 +661,16 @@ class SymlinkCheckerApp(App):
             if antwoord == 'j':
                 nieuwe_locatie = os.path.join(dir_path, item)
                 try:
-                    details_label.update(f" Verplaatsen: {item}...")
+                    details_label.update(f"📦 Verplaatsen: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen: {item}..."))
+                    new_item = ListItem(Label(f"📦 Verplaatsen: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
 
                     if os.path.exists(nieuwe_locatie):
-                        details_label.update(f" Verwijderen oude: {item}...")
+                        details_label.update(f"🗑️ Verwijderen oude: {item}...")
                         await asyncio.sleep(0.05)
-                        new_item = ListItem(Label(f" Verwijderen oude: {item}..."))
+                        new_item = ListItem(Label(f"🗑️ Verwijderen oude: {item}..."))
                         activity_log.append(new_item)
                         new_item.scroll_visible()
                         if os.path.isdir(nieuwe_locatie) and not os.path.islink(nieuwe_locatie):
@@ -677,16 +678,16 @@ class SymlinkCheckerApp(App):
                         else:
                             os.remove(nieuwe_locatie)
 
-                    details_label.update(f" Verplaatsen naar: {item}...")
+                    details_label.update(f"📤 Verplaatsen naar: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Verplaatsen naar: {item}..."))
+                    new_item = ListItem(Label(f"📤 Verplaatsen naar: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     shutil.move(app_path, nieuwe_locatie)
 
-                    details_label.update(f" Symlink aanmaken: {item}...")
+                    details_label.update(f"🔗 Symlink aanmaken: {item}...")
                     await asyncio.sleep(0.05)
-                    new_item = ListItem(Label(f" Symlink aanmaken: {item}..."))
+                    new_item = ListItem(Label(f"🔗 Symlink aanmaken: {item}..."))
                     activity_log.append(new_item)
                     new_item.scroll_visible()
                     os.symlink(nieuwe_locatie, app_path)
