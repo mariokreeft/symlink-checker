@@ -1,0 +1,9 @@
+# Symlink Checker - Dependencies
+
+# Terminal UI (Textual)
+textual>=0.63.0
+
+# Web Interface (NiceGUI)
+nicegui>=3.8.0
+
+# Both interfaces share config.json and skiplist.txt files
